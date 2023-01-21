@@ -1,4 +1,6 @@
-# visa-system
+# rielgobot-pro
+
+Empowered version of origin `rielgobot` bot
 
 ### How to develop an executor?
 

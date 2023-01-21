@@ -9,5 +9,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./allowedLocation.geojson:/var/data/allowedLocation.geojson
+      - ./localStorageSetup.js:/var/data/localStorageSetup.js
     networks:
       - private
