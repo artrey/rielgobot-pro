@@ -1,0 +1,12 @@
+# Ignore everything
+**
+
+# Allowed
+!rielgobot_pro/
+!requirements.txt
+
+# Override allowed
+.idea/
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
