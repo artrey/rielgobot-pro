@@ -25,9 +25,6 @@ def grab_from_gratka(url: str) -> FlatInfo:
     )
 
 
-# print(grab_from_gratka("https://gratka.pl/nieruchomosci/do-wynajecia-3-pokoje-70m-konstruktorska-obok-galerii-mokotow/oi/28712999"))
-
-
 def grab_from_otodom(url: str) -> FlatInfo:
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text, features=BS4_PARSER)
@@ -44,17 +41,10 @@ def grab_from_otodom(url: str) -> FlatInfo:
     )
 
 
-print(grab_from_otodom("https://www.otodom.pl/pl/oferta/mieszkanie-na-goclawiu-z-pieknym-widokiem-ID4jZPg"))
-# print(grab_from_otodom("https://www.otodom.pl/pl/oferta/mieszkanie-2-pokoje-jak-nowe-praga-poludnie-goclaw-ID4jZYY"))
-
-
 def grab_from_olx(url: str) -> FlatInfo:
     response = requests.get(url)
     images = re.findall(r'src="(https://ireland.apollo.olxcdn.com:443/v1/files[^"]+)', response.text)
     return FlatInfo(images=images)
-
-
-# print(grab_from_olx("https://www.olx.pl/d/oferta/komfortowa-kawalerka-bezpos-przy-dworcu-centralny-CID3-IDSMQMi.html"))
 
 
 GRABBERS: dict[str, ty.Callable[[str], FlatInfo]] = {
@@ -62,3 +52,23 @@ GRABBERS: dict[str, ty.Callable[[str], FlatInfo]] = {
     "otodom": grab_from_otodom,
     "gratka": grab_from_gratka,
 }
+
+
+if __name__ == "__main__":
+    # gratka
+    print(
+        grab_from_gratka(
+            "https://gratka.pl/nieruchomosci/do-wynajecia-3-pokoje-70m-konstruktorska-obok-galerii-mokotow/oi/28712999"
+        )
+    )
+
+    # otodom
+    print(grab_from_otodom("https://www.otodom.pl/pl/oferta/mieszkanie-na-goclawiu-z-pieknym-widokiem-ID4jZPg"))
+    print(
+        grab_from_otodom("https://www.otodom.pl/pl/oferta/mieszkanie-2-pokoje-jak-nowe-praga-poludnie-goclaw-ID4jZYY")
+    )
+
+    # olx
+    print(
+        grab_from_olx("https://www.olx.pl/d/oferta/komfortowa-kawalerka-bezpos-przy-dworcu-centralny-CID3-IDSMQMi.html")
+    )
