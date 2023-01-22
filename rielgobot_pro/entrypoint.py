@@ -65,7 +65,7 @@ def main_loop():  # noqa: C901
                     pass
 
                 full_text_locator = page.locator(".message-content").last.locator(".text-content")
-                last_link_locator = full_text_locator.locator("a")
+                last_link_locator = full_text_locator.locator("a").last
 
                 href = last_link_locator.get_attribute("href")
                 if old_href == href:
