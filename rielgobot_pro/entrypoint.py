@@ -24,7 +24,7 @@ def prepare_message(info: FlatInfo) -> str:
     lines = []
 
     if len(info.images) > MAX_MEDIA_GROUP:
-        lines.append(f"<i>Должны быть еще фото (всего: {len(info.images)}</i>")
+        lines.append(f"<i>На сайте есть еще фото (всего: {len(info.images)})</i>")
     if info.location:
         lines.append(
             "<a href='https://www.google.com/maps/search/"
@@ -99,23 +99,11 @@ def main_loop():  # noqa: C901
                 info.area = info.area or area
                 info.price = info.price or price
 
-                images = info.images
                 send_message(
                     text=prepare_message(info) + f"\n<a href='{href}'>{source.upper()}</a>",
-                    images=images[:MAX_MEDIA_GROUP],
+                    images=info.images[:MAX_MEDIA_GROUP],
                     parse_mode=ParseMode.HTML,
                 )
-                images = images[MAX_MEDIA_GROUP:]
-
-                while images:
-                    time.sleep(1.5)  # telegram limitation: maximum 1 message per sec
-                    send_message(
-                        "_Продолжение_",
-                        images=images[:MAX_MEDIA_GROUP],
-                        disable_notification=True,
-                        parse_mode=ParseMode.MARKDOWN_V2,
-                    )
-                    images = images[MAX_MEDIA_GROUP:]
 
                 total_errors = 0
 
