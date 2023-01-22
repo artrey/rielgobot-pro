@@ -48,7 +48,7 @@ def main_loop():  # noqa: C901
 
     with playwright.sync_api.sync_playwright() as p:
         browser_type = p.chromium
-        browser = browser_type.launch()
+        browser = browser_type.launch(timeout=10000)
         page = browser.new_page()
 
         page.goto(SOURCE_TELEGRAM_CHAT_WEB_URL)
