@@ -9,4 +9,6 @@ RUN python -m playwright install --with-deps chromium
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+COPY . .
+
 CMD python -m rielgobot_pro
