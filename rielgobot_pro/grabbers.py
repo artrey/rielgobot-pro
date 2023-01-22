@@ -43,8 +43,35 @@ def grab_from_otodom(url: str) -> FlatInfo:
 
 def grab_from_olx(url: str) -> FlatInfo:
     response = requests.get(url)
-    images = re.findall(r'src="(https://ireland.apollo.olxcdn.com:443/v1/files[^"]+)', response.text)
-    return FlatInfo(images=images)
+    soup = bs4.BeautifulSoup(response.text, features=BS4_PARSER)
+    id_str = soup.find("div", attrs={"data-cy": "ad-footer-bar-section"}).find("span").text
+    flat_id = re.findall(r"(\d+)", id_str)[0]
+
+    response = requests.get(f"https://www.olx.pl/api/v1/offers/{flat_id}")
+    data = response.json().get("data") or {}
+    coords = data.get("map") or {}
+
+    info = FlatInfo(
+        location=Location(longitude=coords["lon"], latitude=coords["lat"]),
+        images=[
+            x.get("link", "").format(width=x.get("width", 1024), height=x.get("height", 768))
+            for x in data.get("photos", [])
+        ],
+    )
+
+    params = data.get("params") or []
+    for param in params:
+        key = param.get("key")
+        if key == "m":
+            info.area = float(param.get("value", {}).get("key", 0)) or None
+        if key == "rooms":
+            room_key = param.get("value", {}).get("key")
+            info.rooms = {"one": 1, "two": 2, "three": 3, "four": 4}.get(room_key)
+        if key == "price":
+            value = param.get("value") or {}
+            info.price = f"{value.get('value') or ''} {value.get('currency') or ''}".strip() or None
+
+    return info
 
 
 GRABBERS: dict[str, ty.Callable[[str], FlatInfo]] = {
