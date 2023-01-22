@@ -9,15 +9,15 @@ from telegram import ParseMode
 from telegram.error import RetryAfter
 
 from rielgobot_pro.bot import send_message
-from rielgobot_pro.constants import (
+from rielgobot_pro.grabbers import GRABBERS
+from rielgobot_pro.models import FlatInfo
+from rielgobot_pro.settings import (
     ALLOWED_LOCATION_GEOJSON,
     MAX_ERRORS_IN_A_ROW,
     MAX_MEDIA_GROUP,
     SOURCE_TELEGRAM_CHAT_WEB_URL,
     SOURCE_TELEGRAM_LOCAL_STORAGE_SETUP,
 )
-from rielgobot_pro.grabbers import GRABBERS
-from rielgobot_pro.models import FlatInfo
 
 
 def prepare_message(info: FlatInfo) -> str:

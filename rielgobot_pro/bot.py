@@ -2,7 +2,7 @@ import functools
 
 from telegram import Bot, InputMediaPhoto
 
-from rielgobot_pro.constants import TARGET_CHAT_ID, TELEGRAM_BOT_TOKEN
+from rielgobot_pro.settings import TARGET_CHAT_ID, TELEGRAM_BOT_TOKEN
 
 
 @functools.lru_cache(maxsize=None)

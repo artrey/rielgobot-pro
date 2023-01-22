@@ -6,6 +6,7 @@ import bs4
 import requests
 
 from rielgobot_pro.models import FlatInfo, Location
+from rielgobot_pro.settings import BS4_PARSER
 
 
 def grab_from_gratka(url: str) -> FlatInfo:
@@ -29,7 +30,7 @@ def grab_from_gratka(url: str) -> FlatInfo:
 
 def grab_from_otodom(url: str) -> FlatInfo:
     response = requests.get(url)
-    soup = bs4.BeautifulSoup(response.text, features="lxml")
+    soup = bs4.BeautifulSoup(response.text, features=BS4_PARSER)
     json_data = json.loads(soup.find(id="__NEXT_DATA__").text)
     flat_data = json_data.get("props", {}).get("pageProps", {}).get("ad") or {}
     coords = flat_data.get("location", {}).get("coordinates")
@@ -43,7 +44,7 @@ def grab_from_otodom(url: str) -> FlatInfo:
     )
 
 
-# print(grab_from_otodom("https://www.otodom.pl/pl/oferta/mieszkanie-na-goclawiu-z-pieknym-widokiem-ID4jZPg"))
+print(grab_from_otodom("https://www.otodom.pl/pl/oferta/mieszkanie-na-goclawiu-z-pieknym-widokiem-ID4jZPg"))
 # print(grab_from_otodom("https://www.otodom.pl/pl/oferta/mieszkanie-2-pokoje-jak-nowe-praga-poludnie-goclaw-ID4jZYY"))
 
 
