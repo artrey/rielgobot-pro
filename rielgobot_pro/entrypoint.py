@@ -1,4 +1,5 @@
 import datetime as dt
+import logging
 import re
 import time
 
@@ -18,6 +19,8 @@ from rielgobot_pro.settings import (
     SOURCE_TELEGRAM_CHAT_WEB_URL,
     SOURCE_TELEGRAM_LOCAL_STORAGE_SETUP,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def prepare_message(info: FlatInfo) -> str:
@@ -86,6 +89,7 @@ def main_loop():  # noqa: C901
                 try:
                     info = grabber(href)
                 except Exception as ex:
+                    logger.exception(ex)
                     send_message(f"Не удалось забрать данные:\n{href}\n\n{ex}"[:512])
                     continue
 
@@ -115,6 +119,7 @@ def main_loop():  # noqa: C901
                 time.sleep(rae.retry_after)
 
             except Exception as ex:
+                logger.exception(ex)
                 total_errors += 1
                 send_message(f"Ooops, ошибочка:\n{ex}"[:512])
 
