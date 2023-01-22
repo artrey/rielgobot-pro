@@ -24,7 +24,7 @@ def prepare_message(info: FlatInfo) -> str:
     lines = []
 
     if len(info.images) > MAX_MEDIA_GROUP:
-        lines.append(f"<Должны быть еще фото (всего: {len(info.images)}>")
+        lines.append(f"<i>Должны быть еще фото (всего: {len(info.images)}</i>")
     if info.location:
         lines.append(
             "<a href='https://www.google.com/maps/search/"
