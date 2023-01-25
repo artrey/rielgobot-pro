@@ -3,14 +3,35 @@ version: "3.9"
 networks:
   private:
 
+volumes:
+  redisdata:
+
 services:
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      - private
+
   bot:
     image: ghcr.io/artrey/rielgobot-pro:latest
     restart: unless-stopped
     env_file:
       - .env
     volumes:
-      - ./allowedLocation.geojson:/var/data/allowedLocation.geojson
-      - ./localStorageSetup.js:/var/data/localStorageSetup.js
+      - ./data/:/var/data/:ro
+    networks:
+      - private
+
+  dramatiq:
+    image: ghcr.io/artrey/rielgobot-pro:latest
+    command: dramatiq rielgobot_pro.tasks --processes 1 --threads 1
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data/:/var/data/:ro
     networks:
       - private
