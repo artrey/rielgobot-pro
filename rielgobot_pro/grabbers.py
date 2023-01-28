@@ -74,14 +74,37 @@ def grab_from_olx(url: str) -> FlatInfo:
     return info
 
 
+def grab_from_morizon(url: str) -> FlatInfo:
+    response = requests.get(url)
+    soup = bs4.BeautifulSoup(response.text, features=BS4_PARSER)
+    images = soup.find(id="multimediaBox").find(class_="imageThumbs").find_all("img")
+    gmap = soup.find(class_="GoogleMap")
+
+    return FlatInfo(
+        location=Location(
+            longitude=float(gmap.attrs["data-lng"]),
+            latitude=float(gmap.attrs["data-lat"]),
+        ),
+        images=[x.get("src").replace("/144/100/4/", "/832/468/2/") for x in images],
+    )
+
+
 GRABBERS: dict[str, ty.Callable[[str], FlatInfo]] = {
     "olx": grab_from_olx,
     "otodom": grab_from_otodom,
     "gratka": grab_from_gratka,
+    "morizon": grab_from_morizon,
 }
 
 
 if __name__ == "__main__":
+    # morizon
+    print(
+        grab_from_morizon(
+            "https://www.morizon.pl/oferta/wynajem-mieszkanie-warszawa-srodmiescie-kolska-68m2-mzn2041527811"
+        )
+    )
+
     # gratka
     print(
         grab_from_gratka(

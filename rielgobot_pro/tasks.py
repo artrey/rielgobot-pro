@@ -50,7 +50,7 @@ def send_error(message_data, exception_data):
 def grab_info(source: str, url: str, initial_info: dict):
     grabber = GRABBERS.get(source)
     if not grabber:
-        send_message(f"O_o вот это поворот - появился новый неизвестный источник: {source}")
+        send_message(f"O_o вот это поворот - появился новый неизвестный источник: {source}\n\n{url}")
         return
 
     info = grabber(url)
