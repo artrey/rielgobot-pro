@@ -38,7 +38,7 @@ def main_loop():  # noqa: C901
                 except playwright.sync_api.TimeoutError:
                     pass
 
-                full_text_locator = page.locator(".message-content").last.locator(".text-content")
+                full_text_locator = page.locator(".bubble-content").last.locator(".message")
                 last_link_locator = full_text_locator.locator("a").last
 
                 href = last_link_locator.get_attribute("href")
