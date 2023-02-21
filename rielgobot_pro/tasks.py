@@ -10,7 +10,7 @@ from telegram.error import RetryAfter
 from .bot import send_message
 from .grabbers import GRABBERS
 from .models import FlatInfo
-from .settings import ALLOWED_LOCATION_GEOJSON, MAX_MEDIA_GROUP
+from .settings import ALLOWED_LOCATION_GEOJSON, MAX_AREA, MAX_MEDIA_GROUP, MIN_AREA
 
 allowed_location_df = gpd.read_file(ALLOWED_LOCATION_GEOJSON)
 
@@ -64,6 +64,9 @@ def grab_info(source: str, url: str, initial_info: dict):
     info.rooms = info.rooms or initial_info.get("rooms")
     info.area = info.area or initial_info.get("area")
     info.price = info.price or initial_info.get("price")
+
+    if info.area is not None and (info.area < MIN_AREA or info.area > MAX_AREA):
+        return
 
     images = info.images
     page = 1

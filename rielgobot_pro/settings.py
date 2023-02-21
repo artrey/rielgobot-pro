@@ -9,3 +9,5 @@ SOURCE_TELEGRAM_LOCAL_STORAGE_SETUP = os.getenv("SOURCE_TELEGRAM_LOCAL_STORAGE_S
 ALLOWED_LOCATION_GEOJSON = os.getenv("ALLOWED_LOCATION_GEOJSON")
 BS4_PARSER = os.getenv("BS4_PARSER", "html.parser")
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+MIN_AREA = float(os.getenv("MIN_AREA", 20))
+MAX_AREA = float(os.getenv("MAX_AREA", 100))
