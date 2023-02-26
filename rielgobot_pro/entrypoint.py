@@ -63,6 +63,10 @@ def main_loop():  # noqa: C901
             except KeyboardInterrupt:
                 break
 
+            except playwright.sync_api.TimeoutError as terr:
+                logger.exception(terr)
+                total_errors += 1
+
             except Exception as ex:
                 logger.exception(ex)
                 total_errors += 1
